@@ -1374,7 +1374,14 @@ WorkspaceMonitor.prototype = {
     // Tests if @win should be shown in the Overview
     _isOverviewWindow : function (win) {
         let tracker = Cinnamon.WindowTracker.get_default();
-        return Main.isInteresting(win.get_meta_window());
+        let metaWindow = win.get_meta_window();
+        let isInteresting = Main.isInteresting(metaWindow);
+        if (isInteresting) {
+                if (!this.filter || this.filter.matches(metaWindow.title)) {
+                    return true;
+                }
+        }
+        return false;
     },
 
     // Create a clone of a (non-desktop) window and add it to the window list
